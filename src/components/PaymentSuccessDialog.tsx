@@ -12,7 +12,7 @@ import { CheckIcon } from "lucide-react"
 
 const PaymentSuccessDialog = () => {
   const router = useRouter()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   const { data, isPending } = useQuery({
     queryKey: ["user-plan"],
