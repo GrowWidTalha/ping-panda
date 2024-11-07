@@ -11,13 +11,12 @@ import { Plus } from "lucide-react"
 import { createCheckoutSession } from "@/lib/stripe"
 import PaymentSuccessDialog from "@/components/PaymentSuccessDialog"
 
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 interface PageProps {
-  searchParams: {
-    [key: string]: string | string[] | undefined
-  }
+  searchParams: SearchParams
 }
 const Page = async ({ searchParams }: PageProps) => {
-  searchParams.get
+
   const auth = await currentUser()
   if (!auth) redirect("/sign-in")
   const user = await db.user.findUnique({
@@ -27,7 +26,7 @@ const Page = async ({ searchParams }: PageProps) => {
   })
 
   if (!user) redirect("/sign-in")
-  const intent = searchParams.intent
+  const {intent, success} = await searchParams
   if (intent === "upgrade") {
     const session = await createCheckoutSession({
       userEmail: user.email,
@@ -37,10 +36,10 @@ const Page = async ({ searchParams }: PageProps) => {
     if(session.url) redirect(session.url)
   }
 
-  const success = searchParams.success
+  const success1 = success
   return (
     <>
-    {success && <PaymentSuccessDialog />}
+    {success1 && <PaymentSuccessDialog />}
     <DashboardPage
       title="Dashboard"
       // hideBackButton

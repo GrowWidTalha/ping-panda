@@ -4,14 +4,14 @@ import { currentUser } from "@clerk/nextjs/server"
 import { notFound } from "next/navigation"
 import React from "react"
 import CategoryPageContent from "./category-page-content"
-
+type Params = Promise<{ name: string }>
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 interface Props {
-  params: {
-    name: string | string[] | undefined
-  }
+  params: Params
 }
 
-async function Page({ params: { name } }: Props) {
+async function Page({ params }: Props) {
+  const { name } = await params
   if (typeof name !== "string") notFound()
   const auth = await currentUser()
   if (!auth) notFound()
