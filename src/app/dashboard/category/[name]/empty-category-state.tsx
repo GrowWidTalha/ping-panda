@@ -1,5 +1,7 @@
 import { Card } from "@/components/ui/card"
+import { db } from "@/db"
 import { client } from "@/lib/client"
+import { currentUser } from "@clerk/nextjs/server"
 import { useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import React, { useEffect } from "react"
@@ -30,11 +32,18 @@ export const EmptyCategoryState = ({ categoryName }: Props) => {
       router.refresh()
     }
   }, [hasEvents, router])
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      const res = await client.auth.getUser.$get()
 
-  const codeSnippet = `await fetch('https://pingpanda.talhaali.xyz/api/events', {
+      return (await res.json()).user
+    },
+  })
+  const codeSnippet = `await fetch('${process.env.NEXT_PUBLIC_APP_URL}/api/v1/event', {
   method: 'POST',
   headers: {
-    'Authorization': 'Bearer YOUR_API_KEY'
+    'Authorization': 'Bearer ${user?.apiKey}'
   },
   body: JSON.stringify({
     category: '${categoryName}',

@@ -1,6 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server"
 import { router } from "../__internals/router"
-import { publicProcedure } from "../procedures"
+import { privateProcedure, publicProcedure } from "../procedures"
 import { db } from "@/db"
 
 export const authRouter = router({
@@ -28,5 +28,10 @@ export const authRouter = router({
     }
 
     return c.json({ isSynced: true })
+  }),
+  getUser: privateProcedure.query(async ({ c, ctx }) => {
+    const { user } = ctx
+
+    return c.json({ user })
   }),
 })
