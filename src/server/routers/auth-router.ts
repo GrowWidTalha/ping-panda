@@ -1,18 +1,18 @@
-import { currentUser } from "@clerk/nextjs/server"
+import { auth, currentUser } from "@clerk/nextjs/server"
 import { router } from "../__internals/router"
 import { privateProcedure, publicProcedure } from "../procedures"
 import { db } from "@/db"
 
 export const authRouter = router({
   getDatabaseSyncStatus: publicProcedure.query(async ({ c }) => {
-    const auth = await currentUser()
-    console.log(auth)
+    const authe = await auth()
+    console.log(authe)
     if (!auth) {
-      return c.json({ isSynced: false, message: "auth not found" })
+      return c.json({ isSynced: false, auth: auth })
     }
     const user = await db.user.findFirst({
       where: {
-        externalId: auth.id,
+        externalId: authe.userId,
       },
     })
 
