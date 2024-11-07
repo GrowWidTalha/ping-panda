@@ -6,8 +6,9 @@ import { db } from "@/db"
 export const authRouter = router({
   getDatabaseSyncStatus: publicProcedure.query(async ({ c }) => {
     const auth = await currentUser()
+    console.log(auth)
     if (!auth) {
-      return c.json({ isSynced: false })
+      return c.json({ isSynced: false, message: "auth not found" })
     }
     const user = await db.user.findFirst({
       where: {
