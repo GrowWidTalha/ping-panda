@@ -7,7 +7,7 @@ import superjson from "superjson"
 const getBaseUrl = () => {
   return process.env.NODE_ENV === "development"
     ? "http://localhost:3000/"
-    : "https://<YOUR_DEPLOYED_WORKER_URL>/"
+    : "https://ping-panda-psi.vercel.app/"
 }
 
 export const baseClient = hc<AppType>(getBaseUrl(), {
