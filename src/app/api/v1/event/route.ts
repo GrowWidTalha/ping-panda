@@ -76,7 +76,7 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json(
         {
           message:
-            "Monthly quota reached. Please upgrade your plan for more events",
+            "Monthly quota. Please upgrade your plan for more events",
         },
         { status: 429 }
       )

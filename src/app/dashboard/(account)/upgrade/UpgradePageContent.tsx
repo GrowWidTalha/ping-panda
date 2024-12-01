@@ -10,7 +10,7 @@ import React from "react"
 
 const UpgradePageContent = ({ plan }: { plan: Plan }) => {
   const router = useRouter()
-  const { mutate: createCheckoutSession } = useMutation({
+  const { mutate: createCheckoutSession,  } = useMutation({
     mutationFn: async () => {
       const res = await client.payment.createCheckoutSession.$post()
       return await res.json()
@@ -18,6 +18,7 @@ const UpgradePageContent = ({ plan }: { plan: Plan }) => {
     onSuccess: ({ url }) => {
       if (url) router.push(url)
     },
+
   })
 
   const { data: usageData } = useQuery({
